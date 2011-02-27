@@ -49,55 +49,31 @@
             	}
 
             var availPlayerLayout = [
-                [{
-                field: "id",
-                name: "ID",
-                width: 6
-            },
-            {
-                field: "name",
-                name: "Name",
-                width: 17
-            },
-            {
-                field: "team",
-                name: "Team",
-                width: 3
-            },            {
-                field: "amount",
-                name: "$",
-                width: 2
-            },
-            {
-                field: "time",
-                name: "Time of Last Bid",
-                width: 25,
-                formatter: function (bidStamp) {return dojo.date.stamp.fromISOString(bidStamp).toString();}
-            },
-            {
-                field: "time",
-                name: "Seconds Remaining",
-                width: 5,
-                formatter: function (bidStamp) { 
-                	var bidDt = dojo.date.stamp.fromISOString(bidStamp); 
-                	var bidDeadline = dojo.date.add(bidDt, "day", 2);
-                	var secsRemaining = -dojo.date.difference(bidDeadline, new Date(), "second");
-                	return formatSecsRemaining(secsRemaining); 
-                	}
-            },      
-            {
-            	field: "id",
-            	name: "Enter Bid Amt",
-            	width: 10,
-            	formatter: function (id) {return "<input type=text size=4 name=bid" + id +">";}
-            },
-            {
-            	field: "id",
-            	name: "Bid the minimum!",
-            	width: 10,
-            	formatter: function (id) {return "<input type=submit value=\"QuickBid\" name=qbid" + id + " />"}
-            }
-            ]];
+	 			[
+					{ field: "id", name: "#", width: 6 },
+					{ field: "name", name: "Name", width: 17 },
+					{ field: "team", name: "Tm", width: 3 },
+					{ field: "amount", name: "$", width: 2 },
+					{ field: "time", name: "Time of Last Bid", width: 25,
+						formatter: function (bidStamp) {return dojo.date.stamp.fromISOString(bidStamp).toString();}
+					},
+					{ field: "time", name: "SecsRemn", width: 10,
+						formatter: function (bidStamp) { 
+								   var bidDt = dojo.date.stamp.fromISOString(bidStamp); 
+								   var bidDeadline = dojo.date.add(bidDt, "day", 2);
+								   var secsRemaining = -dojo.date.difference(bidDeadline, new Date(), "second");
+								   return formatSecsRemaining(secsRemaining); 
+					   }
+					},      
+					{ field: "id", name: "Enter Bid Amt", width: 10,
+						formatter: function (id) {return "<input type=text size=6 name=bid" + id +">";}
+					},
+					{ field: "id", name: "Bid the minimum!", width: 12,
+						formatter: function (id) {return "<input type=submit value=\"QuickBid\" name=qbid" + id + " />"}
+					}
+				]
+			];
+			
             dijit.byId("grid").setStructure(availPlayerLayout);
             dijit.byId("grid").setStore(availPlayerStore, {});
             dijit.byId("grid").autoHeight = true;
