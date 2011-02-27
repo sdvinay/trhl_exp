@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html dir="ltr">
+    
+    <head>
+    	<link rel="stylesheet" type="text/css" href="http://dojotoolkit.org/reference-guide/dojox/data/../../_static/js/dijit/themes/claro/claro.css"
+        />
+        <style type="text/css">
+            body, html { font-family:helvetica,arial,sans-serif; font-size:90%; }
+        </style>
+        <style type="text/css">
+            @import "http://dojotoolkit.org/reference-guide/dojox/data/../../_static/js/dojox/grid/resources/Grid.css"; @import "http://dojotoolkit.org/reference-guide/dojox/data/../../_static/js/dojox/grid/resources/tundraGrid.css";
+        </style>
+    </head>
+    
+    <body class=" claro ">
+        <div id="grid" style="width: 350px; height: 300px;" dojoType="dojox.grid.DataGrid"
+        query="{}" rowsPerPage="40">
+        </div>
+    </body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/dojo/1.5.0/dojo/dojo.xd.js" djConfig="parseOnLoad: true">
+    </script>
+    <script>
+        dojo.require("dojox.grid.DataGrid");
+        dojo.require("dojox.data.CsvStore");
+
+        dojo.addOnLoad(function() {
+            var peopleData = "firstname:lastname:age\n" + "John: Doe: 21\n" + "Jane: Doe: 22\n" + "Richard: Smith: 43\n" + "Sally: Smith: 49\n" + "Lian: Zu: 23\n" + "Ichiro: Kagetsume: 23\n" + "Umeko: Tsuguri: 18\n" + "Alptraum: Reisender: 25\n" + "Thomas: Winthrope: 14\n";
+
+            var personStoreForGrid = new dojox.data.CsvStore({
+                url: "http://kumarsrock.org/vinay/projects/trhl_exp/test_people.txt",
+                separator: ":"
+            });
+
+            var layoutPeople = [
+                [{
+                field: "firstname",
+                name: "First Name",
+                width: 10
+            },
+            {
+                field: "lastname",
+                name: "Last Name",
+                width: 10
+            },
+            {
+                field: "age",
+                name: "Age",
+                width: 'auto'
+            }]];
+            dijit.byId("grid").setStructure(layoutPeople);
+            dijit.byId("grid").setStore(personStoreForGrid, {});
+        });
+    </script>
+    <!-- NOTE: the following script tag is not intended for usage in real
+    world!! it is part of the CodeGlass and you should just remove it when
+    you use the code -->
+    <script type="text/javascript">
+        dojo.addOnLoad(function() {
+            if (document.pub) {
+                document.pub();
+            }
+        });
+    </script>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html dir="ltr">
+    
+    <head>
+        <link rel="stylesheet" type="text/css" href="http://dojotoolkit.org/reference-guide/dojox/data/../../_static/js/dijit/themes/claro/claro.css"
+        />
+        <style type="text/css">
+            body, html { font-family:helvetica,arial,sans-serif; font-size:90%; }
+        </style>
+        <style type="text/css">
+            @import "http://dojotoolkit.org/reference-guide/dojox/data/../../_static/js/dojox/grid/resources/Grid.css"; @import "http://dojotoolkit.org/reference-guide/dojox/data/../../_static/js/dojox/grid/resources/tundraGrid.css";
+        </style>
+        <title>TRHL Available Players</title>
+    </head>
+    
+    <body class=" claro ">
+    	<span align="center">
+    	<!-- form for submitting bids; each row in the grid will have input fields for bid submission-->
+    	<form name=bidding action="http://www.trhl.org/restricted/redirect_bidprocess.php" method=post> 
+		<input type="hidden" name="action" value="verify"> 
+        <input type=submit value="Confirm"> 
+        <input type=reset value="Clear All Bids"><br> 
+
+		<!-- div for data grid of available players-->
+        <div id="grid" style="width: 600px; height: 300px;  margin-left: auto;
+    margin-right: auto;" dojoType="dojox.grid.DataGrid"
+        query="{}" rowsPerPage="40">
+        </div>
+        </span>
+    </body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/dojo/1.5.0/dojo/dojo.xd.js" djConfig="parseOnLoad: true">
+    </script>
+    <script>
+        dojo.require("dojox.grid.DataGrid");
+        dojo.require("dojox.data.CsvStore");
+        dojo.require("dojo.date");
+        dojo.require("dojo.date.stamp");
+
+        dojo.addOnLoad(function() {
+            var availPlayerStore = new dojox.data.CsvStore({
+                url: "available.txt",
+                separator: "/"
+            });
+            
+            var formatSecsRemaining = function (secsRemaining) { 
+ //           	if (secsRemaining < 3000) {return secsRemaining + "sec"; }
+   //          	if (secsRemaining < 3000) {return int(secsRemaining)/60 + "min"; }
+            	return secsRemaining;
+            	}
+
+            var availPlayerLayout = [
+                [{
+                field: "id",
+                name: "ID",
+                width: 6
+            },
+            {
+                field: "name",
+                name: "Name",
+                width: 17
+            },
+            {
+                field: "team",
+                name: "Team",
+                width: 3
+            },            {
+                field: "amount",
+                name: "$",
+                width: 2
+            },
+            {
+                field: "time",
+                name: "Time of Last Bid",
+                width: 25,
+                formatter: function (bidStamp) {return dojo.date.stamp.fromISOString(bidStamp).toString();}
+            },
+            {
+                field: "time",
+                name: "Seconds Remaining",
+                width: 5,
+                formatter: function (bidStamp) { 
+                	var bidDt = dojo.date.stamp.fromISOString(bidStamp); 
+                	var bidDeadline = dojo.date.add(bidDt, "day", 2);
+                	var secsRemaining = -dojo.date.difference(bidDeadline, new Date(), "second");
+                	return formatSecsRemaining(secsRemaining); 
+                	}
+            },      
+            {
+            	field: "id",
+            	name: "Enter Bid Amt",
+            	width: 10,
+            	formatter: function (id) {return "<input type=text size=4 name=bid" + id +">";}
+            },
+            {
+            	field: "id",
+            	name: "Bid the minimum!",
+            	width: 10,
+            	formatter: function (id) {return "<input type=submit value=\"QuickBid\" name=qbid" + id + " />"}
+            }
+            ]];
+            dijit.byId("grid").setStructure(availPlayerLayout);
+            dijit.byId("grid").setStore(availPlayerStore, {});
+            dijit.byId("grid").autoHeight = true;
+            dijit.byId("grid").autoWidth = true;
+        });
+    </script>
+
+
+</html>
