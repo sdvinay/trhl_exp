@@ -42,13 +42,20 @@
                 separator: "/"
             });
             
-            var formatSecsRemaining = function (secsRemaining) { 
- //           	if (secsRemaining < 3000) {return secsRemaining + "sec"; }
-   //          	if (secsRemaining < 3000) {return int(secsRemaining)/60 + "min"; }
-            	return secsRemaining;
-            	}
+		var formatSecsRemaining = function (secsRemaining) {
+			if (secsRemaining < 5*60) {
+				return secsRemaining + " sec";
+			} // less than 5 min, display secs
+			// less than 1.5 hours, display minutes
+			if (secsRemaining < 90*60) {
+				return Math.round(parseInt(secsRemaining)/60) + " min";
+			}
+			// else display hours
+			return Math.round(parseInt(secsRemaining)/60/60) + " hours";
 
-            var availPlayerLayout = [
+		}   
+
+		var availPlayerLayout = [
 	 			[
 					{ field: "id", name: "#", width: 6 },
 					{ field: "name", name: "Name", width: 17 },
