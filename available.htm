@@ -73,8 +73,8 @@
 					{ field: "name", name: "Name", width: 13 },
 					{ field: "pos", name: "Pos", width: 3 },
 					{ field: "age", name: "Age", width: 3 },
-					{ field: "team", name: "Tm", width: 3 },
-					{ field: "amount", name: "$", width: 2 },
+					{ field: "team", name: "Tm", width: 3  ,formatter: function (amt) {return (typeof(amt) == "undefined")? "&nbsp;" : (amt);}},
+					{ field: "amount", name: "$", width: 2 ,formatter: function (amt) {return (typeof(amt) == "undefined")? "&nbsp;" : parseInt(amt);} },
 					{ field: "time", name: "Time of Last Bid", width: 15, formatter: formatBidDate },
 					{ field: "time", name: "SecsRemn", width: 10,
 						formatter: function (bidStamp) { 
