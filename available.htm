@@ -42,6 +42,10 @@
                 url: "available.txt",
                 separator: "/"
             });
+
+		var intComparator = function(a,b) { return (parseInt(a) - parseInt(b)); };
+		availPlayerStore.comparatorMap = {};
+		availPlayerStore.comparatorMap["amount"] = intComparator;
             
 		var formatSecsRemaining = function (secsRemaining) {
 			if (secsRemaining < 5*60) {
@@ -57,6 +61,7 @@
 		}   
 
 		var formatBidDate = function (bidStamp) {
+			if(typeof(bidStamp) == "undefined") return "&nbsp;";
 			var bidDt = dojo.date.stamp.fromISOString(bidStamp);
 			var foo=dojo.date.locale.format(bidDt, {datePattern: "EEE M/d", timePattern: "K:mm:ssa v"});
 			return foo; 
@@ -73,6 +78,7 @@
 					{ field: "time", name: "Time of Last Bid", width: 15, formatter: formatBidDate },
 					{ field: "time", name: "SecsRemn", width: 10,
 						formatter: function (bidStamp) { 
+			if(typeof(bidStamp) == "undefined") return "&nbsp;";
 								   var bidDt = dojo.date.stamp.fromISOString(bidStamp); 
 								   var bidDeadline = dojo.date.add(bidDt, "day", 2);
 								   var secsRemaining = -dojo.date.difference(bidDeadline, new Date(), "second");
